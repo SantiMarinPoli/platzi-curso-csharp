@@ -11,24 +11,55 @@ namespace CoreEscuela.App
         public Reporteador(Dictionary<LlaveDiccionario,IEnumerable<ObjetoEscuelaBase>> dicObjEsc)
         {
             if(dicObjEsc == null)
-                //throw new ArgumentNullException(nameof(dicObjEsc));
-                _diccionario = dicObjEsc;
+                throw new ArgumentNullException(nameof(dicObjEsc));
+            _diccionario = dicObjEsc;
         }
 
-        public IEnumerable<Escuela> GetListaEscuela()
+        public IEnumerable<Evaluacion> GetListaEvaluacion()
         {
-            IEnumerable<Escuela> rta;
-            if( _diccionario.TryGetValue(LlaveDiccionario.Escuela,
+
+            if( _diccionario.TryGetValue(LlaveDiccionario.Evaluacion,
                                                 out IEnumerable<ObjetoEscuelaBase> lista))
             {
-                rta = lista.Cast<Escuela>();
+                return lista.Cast<Evaluacion>();
             }
-            else
             {
-                rta = null;
+                return new List<Evaluacion>();
             }
-            return rta;
         }
+
+        public IEnumerable<string> GetListaAsignaturas()
+        {
+            return GetListaAsignaturas(out var dummy);
+        }
+
+        public IEnumerable<string> GetListaAsignaturas(out IEnumerable<Evaluacion> listaEvaluacion)
+        {
+            listaEvaluacion = GetListaEvaluacion();
+            return (from Evaluacion ev in listaEvaluacion
+                    select ev.Asignatura.Nombre).Distinct();
+        }
+
+        public Dictionary<string,IEnumerable<Evaluacion>> GetDiccionarioaAsigXEvaluacion()
+        {
+
+            var dicRta = new Dictionary<string,IEnumerable<Evaluacion>>();
+            var listaAsig = GetListaAsignaturas(out var listaEval);
+
+            foreach (var asig in listaAsig)
+            {
+                var evalAsig = from eval in listaEval
+                                where eval.Asignatura.Nombre == asig
+                                select eval;
+                dicRta.Add(asig,evalAsig);
+            }
+
+            return dicRta;
+            
+        }
+        
+        
+    
 
     }
 }

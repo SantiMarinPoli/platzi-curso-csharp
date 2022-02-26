@@ -14,7 +14,7 @@ namespace CoreEscuela
         {
             /*Declarando Eventos*/
             AppDomain.CurrentDomain.ProcessExit += AccionEvento;
-            AppDomain.CurrentDomain.ProcessExit += (obj,e)=> Printer.Beep(100,1000,3);
+            //AppDomain.CurrentDomain.ProcessExit += (obj,e)=> Printer.Beep(100,1000,3);
             AppDomain.CurrentDomain.ProcessExit -= AccionEvento;
 
 
@@ -22,8 +22,10 @@ namespace CoreEscuela
             engine.Inicializar();
             Printer.WriteTitle("BIENVENIDOS A LA ESCUELA");
 
-            var reporteador = new Reporteador(null);
-            reporteador.GetListaEscuela();
+            var reporteador = new Reporteador(engine.GetDiccionarioObjeto());
+            var evaList = reporteador.GetListaEvaluacion();
+            var asigList = reporteador.GetListaAsignaturas();
+            var listaEvalAsig = reporteador.GetDiccionarioaAsigXEvaluacion();
 
            // Printer.Beep(10000, cantidad:10);
             //ImpimirCursosEscuela(engine.Escuela);

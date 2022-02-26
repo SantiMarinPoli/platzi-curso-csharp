@@ -30,11 +30,9 @@ namespace CoreEscuela.App
             CargarEvaluaciones();
 
         }
+        #region "Metodo Lista"
 
- 
-#region "Metodo Lista"
-
-public void ImprimirDiccionario(Dictionary<LlaveDiccionario,IEnumerable<ObjetoEscuelaBase>> dicc,
+    public void ImprimirDiccionario(Dictionary<LlaveDiccionario,IEnumerable<ObjetoEscuelaBase>> dicc,
     bool printEval = false)
 {
     foreach(var obj in dicc)
