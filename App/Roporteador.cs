@@ -7,7 +7,7 @@ namespace CoreEscuela.App
 {
     public class Reporteador
     {
-        private Dictionary<LlaveDiccionario,IEnumerable<ObjetoEscuelaBase>> _diccionario;
+        Dictionary<LlaveDiccionario,IEnumerable<ObjetoEscuelaBase>> _diccionario;
         public Reporteador(Dictionary<LlaveDiccionario,IEnumerable<ObjetoEscuelaBase>> dicObjEsc)
         {
             if(dicObjEsc == null)
@@ -17,8 +17,17 @@ namespace CoreEscuela.App
 
         public IEnumerable<Escuela> GetListaEscuela()
         {
-            var lista = _diccionario.GetValueOrDefault(LlaveDiccionario.Escuela);
-            return lista.Cast<Escuela>();
+            IEnumerable<Escuela> rta;
+            if( _diccionario.TryGetValue(LlaveDiccionario.Escuela,
+                                                out IEnumerable<ObjetoEscuelaBase> lista))
+            {
+                rta = lista.Cast<Escuela>();
+            }
+            else
+            {
+                rta = null;
+            }
+            return rta;
         }
 
     }

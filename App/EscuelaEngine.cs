@@ -82,7 +82,7 @@ public Dictionary<LlaveDiccionario,IEnumerable<ObjetoEscuelaBase>> GetDiccionari
     var listaAsignaturasTmp = new List<Asignatura>();
     var listaAlumnoTmp= new List<Alumno>();
 
-    //dicc.Add(LlaveDiccionario.Escuela,new[] {Escuela});
+    dicc.Add(LlaveDiccionario.Escuela,new[] {Escuela});
     dicc.Add(LlaveDiccionario.Curso,Escuela.Cursos.Cast<ObjetoEscuelaBase>());
 
     foreach (var cur in Escuela.Cursos)
