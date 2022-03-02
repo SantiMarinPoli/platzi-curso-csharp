@@ -26,7 +26,8 @@ namespace CoreEscuela
             var evaList = reporteador.GetListaEvaluacion();
             var asigList = reporteador.GetListaAsignaturas();
             var listaEvalAsig = reporteador.GetDiccionarioaAsigXEvaluacion();
-
+            var listaPromAlumnoAsignatura = reporteador.GetPromAlumnoPorAsignatura();
+            var listaBestAlumnoPorAsignatura = reporteador.GetBestAlumnoPromedioPorAsignatura(10);
            // Printer.Beep(10000, cantidad:10);
             //ImpimirCursosEscuela(engine.Escuela);
 

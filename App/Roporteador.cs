@@ -58,7 +58,48 @@ namespace CoreEscuela.App
             
         }
         
-        
+        public Dictionary<string,IEnumerable<object>> GetPromAlumnoPorAsignatura()
+        {
+            var rta = new Dictionary<string,IEnumerable<object>> ();
+            var diccEvAsig = GetDiccionarioaAsigXEvaluacion();
+
+            foreach(var asigEval in diccEvAsig)
+            {
+                var promAlum = from eval in asigEval.Value
+                            group eval by new {
+                                eval.Alumno.UniqueId,
+                                eval.Alumno.Nombre
+                            } 
+                            into grupoEvalAlumno
+                            select new AlumnoPromedio
+                            {
+                                alumnoId = grupoEvalAlumno.Key.UniqueId,
+                                alumnoNom = grupoEvalAlumno.Key.Nombre,
+                                promedio = grupoEvalAlumno.Average(evaluacion => evaluacion.Nota)
+                            };
+
+                rta.Add(asigEval.Key,promAlum);
+            }
+            return rta;
+        }
+
+        public Dictionary<string,IEnumerable<AlumnoPromedio>> GetBestAlumnoPromedioPorAsignatura(int ranking)
+        {
+            var rta = new Dictionary<string,IEnumerable<AlumnoPromedio>>();
+            var result = GetPromAlumnoPorAsignatura();
+
+            foreach (var asignProm in result)
+            {
+
+                    var dummy = (from eval in asignProm.Value.Cast<AlumnoPromedio>()
+                                    orderby eval.promedio descending
+                                    select eval
+                                    ).Take(ranking);
+                rta.Add(asignProm.Key,dummy);
+            }
+
+            return rta;
+        }
     
 
     }
